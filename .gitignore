@@ -11,3 +11,4 @@ mix.lock
 *.hist
 *.ez
 .tool-versions
+/.elixir_ls

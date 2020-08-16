@@ -86,16 +86,17 @@ defmodule CSV.Encoding.Encoder do
   defp encode_row(row, options) do
     separator = options |> Keyword.get(:separator, @separator)
     delimiter = options |> Keyword.get(:delimiter, @delimiter)
+    empty_string = Keyword.get(options, :empty_string, "")
 
     encoded =
       row
-      |> Enum.map(&encode_cell(&1, separator, delimiter))
+      |> Enum.map(&encode_cell(&1, separator, delimiter, empty_string))
       |> Enum.join(<<separator::utf8>>)
 
     encoded <> delimiter
   end
 
-  defp encode_cell(cell, separator, delimiter) do
-    CSV.Encode.encode(cell, separator: separator, delimiter: delimiter)
+  defp encode_cell(cell, separator, delimiter, empty_string) do
+    CSV.Encode.encode(cell, separator: separator, delimiter: delimiter, empty_string: empty_string)
   end
 end

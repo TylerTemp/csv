@@ -98,4 +98,16 @@ defmodule EscapedFieldsTest do
              ]
            ]
   end
+
+  test "ori no empty_string test" do
+    headers = ["a", "b"]
+    result = [%{"a" => "a1", "b" => ""}, %{"a" => "", "b" => "b2"}, %{"a" => "", "b" => ""}] |> CSV.encode(headers: headers) |> Enum.to_list()
+    assert result == ["a,b\r\n", "a1,\r\n", ",b2\r\n", ",\r\n"]
+  end
+
+  test "double quote empty_string test" do
+    headers = ["a", "b"]
+    result = [%{"a" => "a1", "b" => ""}, %{"a" => "", "b" => "b2"}, %{"a" => "", "b" => ""}] |> CSV.encode(headers: headers, empty_string: ~s<"">) |> Enum.to_list()
+    assert result == ["a,b\r\n", "a1,\"\"\r\n", "\"\",b2\r\n", "\"\",\"\"\r\n"]
+  end
 end
